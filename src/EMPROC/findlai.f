@@ -33,22 +33,22 @@
 
 ! Calculation
 
-      JJJ = MOD(IDATE,1000)
-      XXX = JJJ/8.0
-      LAIc_I = CEILING(XXX)
+      JJJ = MOD(IDATE,1000) ! eg IDATE=2005213, JJJ=213
+      XXX = JJJ/8.0         ! eg XXX = 26.625
+      LAIc_I = CEILING(XXX) ! eg LAIc_I = 27
 
       IF (LAIc_I .EQ. 1) THEN
         LAIp_I = MXLAI
       ELSE
-        LAIp_I = LAIc_I - 1
+        LAIp_I = LAIc_I - 1 ! eg LAIp_I = 26
       ENDIF
 
-      LAIc_HR = (MOD(LAIc_I-1,24))*10000
-      XXX     = (LAIc_I-1)/24.0
-      LAIc_DY = FLOOR(XXX)
-      LAIp_HR = (MOD(LAIp_I-1,24))*10000
-      XXX     = (LAIp_I-1)/24.0
-      LAIp_DY = FLOOR(XXX)
+      LAIc_HR = (MOD(LAIc_I-1,24))*10000 ! eg 20000
+      XXX     = (LAIc_I-1)/24.0          ! eg 1.083333
+      LAIc_DY = FLOOR(XXX)               ! eg 1
+      LAIp_HR = (MOD(LAIp_I-1,24))*10000 ! eg 10000
+      XXX     = (LAIp_I-1)/24.0          ! eg 1.041667
+      LAIp_DY = FLOOR(XXX)               ! eg 1
 
       RETURN
       END SUBROUTINE FINDLAI

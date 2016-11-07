@@ -78,14 +78,24 @@ C-----------------------------------------------------------------------------
           ! later month of growing season
           FERTLZ_ADJ = 1. + 30. / FLOAT(GLEN) - FLOAT(GDAY) / FLOAT(GLEN)
       ELSE
-          WRITE( MESG,94010 ) 'Invalid date specified; date = ', 
-     &                        DATE, 'growing season day = ',
-     &                        GDAY
+c$$$          WRITE( MESG,94010 ) 'Invalid date specified; date = ', 
+c$$$     &                        DATE, 'growing season day = ',
+c$$$     &                        GDAY
+
+         write(*,*) 'gday = ',gday
+         write(*,*) 'date = ',date
+         write(*,*) 'lat = ',lat
+         write(*,*) 'glen = ',glen
+
+         write(0,*) 'Invalid date specified; date = ', 
+     &        DATE, 'growing season day = ',
+     &        GDAY
+          mesg = 'Invalid date specified'
           CALL M3EXIT( 'FERTLZ_ADJ', 0, 0, MESG, 2 )
       ENDIF
 
 C******************  FORMAT  STATEMENTS   ******************************
-94010 FORMAT( A, F10.2, 1X, A, I3, ',', I3 )
+94010 FORMAT( A, I8, 1X, A, I0.8) ! , ',', I3 )
 
 
       RETURN
@@ -160,12 +170,20 @@ C.......  External functions
 C.......  Local parameters
       INTEGER            :: GSEASON_START
       INTEGER            :: GSEASON_END
+      INTEGER            :: GSEASON_START1
+      INTEGER            :: GSEASON_END1
+      INTEGER            :: GSEASON_START2
+      INTEGER            :: GSEASON_END2
 
 C.......  Local variables
       INTEGER  YEAR, MONTH, DAY
       INTEGER  JDAY, GDAY, GLEN
       INTEGER  GSJULIAN_START
       INTEGER  GSJULIAN_END
+      INTEGER  GSJULIAN_START1
+      INTEGER  GSJULIAN_END1
+      INTEGER  GSJULIAN_START2
+      INTEGER  GSJULIAN_END2
       CHARACTER(256)  MESG         ! message buffer
 
 C-----------------------------------------------------------------------------
@@ -196,20 +214,19 @@ C-----------------------------------------------------------------------------
             GLEN = 0
          ELSE
          ! southern hemisphere temperate, NOV, DEC, JAN-MAY
-            IF (JDAY .GE. 1101 .AND. JDAY .LE. 1231 ) THEN
-              GSEASON_START = 1101
-              GSEASON_END   = 1231
-
-              GSJULIAN_START = G2J(YEAR, GSEASON_START)
-              GSJULIAN_END   = G2J(YEAR, GSEASON_END)
-              GDAY = JDAY - GSJULIAN_START + 1
-            ELSE IF (JDAY .GE. 0101 .AND. JDAY .LE. 0531) THEN
-              GSEASON_START = 0101
-              GSEASON_END   = 0531
-
-              GSJULIAN_START = G2J(YEAR, GSEASON_START)
-              GSJULIAN_END   = G2J(YEAR, GSEASON_END)
-              GDAY = JDAY - GSJULIAN_START + 1 + 61
+            GSEASON_START1 = 1101
+            GSEASON_END1   = 1231
+            GSJULIAN_START1 = G2J(YEAR, GSEASON_START1)
+            GSJULIAN_END1   = G2J(YEAR, GSEASON_END1)
+            !
+            GSEASON_START2 = 0101
+            GSEASON_END2   = 0531
+            GSJULIAN_START2 = G2J(YEAR, GSEASON_START2)
+            GSJULIAN_END2   = G2J(YEAR, GSEASON_END2)
+            IF (JDAY .GE. GSJULIAN_START1 .AND. JDAY .LE. GSJULIAN_END1) THEN
+              GDAY = JDAY - GSJULIAN_START1 + 1
+            ELSE IF (JDAY .GE. GSJULIAN_START2 .AND. JDAY .LE. GSJULIAN_END2) THEN
+              GDAY = JDAY - GSJULIAN_START2 + 1 + 61
             ELSE
               GDAY = 0
             ENDIF
