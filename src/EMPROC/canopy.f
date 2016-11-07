@@ -133,9 +133,19 @@
       IF ( Hour  .LT. 0.0 ) THEN
         Hour  = Hour  + 24.0
         Day  = Day  - 1
+        if(day .eq. 0) then
+           day = 365
+        endif
       ELSEIF ( Hour  .GT. 24.0 ) THEN
-        print*,'Invalid hour: HOUR  is ', Hour 
+        Hour  = Hour  - 24.0
+        Day  = Day  + 1
+        if(day .eq. 367) then
+           day = 1
+        endif
       ENDIF
+      if (( Hour  .LT. 0.0 ) .or. ( Hour  .GT. 24.0 )) then
+        print*,'Invalid hour: HOUR  is ', JTIME/10000 + LONG /15
+      endif
 
       Beta   = Calcbeta(Day , Lat , Hour )
       Sinbeta    = SIN(Beta  / 57.29578)
