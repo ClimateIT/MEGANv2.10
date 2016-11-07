@@ -52,13 +52,14 @@ C.........  LOCAL VARIABLES and their descriptions:
       CHARACTER*30     SEGMENT( MXTCOL )     ! Input line fields
 
       INTEGER, PARAMETER :: NFLD  = MXTCOL-3 ! Number of output variables
-      INTEGER         XREF(NFLD)
+      INTEGER          XREF(NFLD)
       INTEGER       :: NSTEP = NFLD
       INTEGER, PARAMETER :: NVARS = 1        ! Number of output variables
 
       REAL, ALLOCATABLE :: IBUFF( :, :, : )  ! input, output buffer
 
       CHARACTER*16  :: PROGNAME = 'CNVT_PFT'
+      integer :: idum
 
 !***********************************************************************
 !... Begin program
@@ -109,8 +110,8 @@ C.........  LOCAL VARIABLES and their descriptions:
                   N = INDEX1(TRIM( MESG ),N_MGN_PFT ,MGN_PFT)
                   XREF( S ) = N
                ELSE
-		  PRINT*, MESG//' is not valid'                
-		  STOP
+                  write(*,*) MESG//' is not valid'
+                  STOP
                ENDIF
                PRINT*,'READ ',MGN_PFT(N)
             ENDDO
@@ -158,7 +159,11 @@ C.........  LOCAL VARIABLES and their descriptions:
             MESG = 'Error writing to  file "'//TRIM(PFTS16)//'"'
             CALL M3EXIT(PROGNAME,0,0,MESG,2)
          ENDIF
-         CALL NEXTIME( 0 , ITIME, TSTEP3D )
+         write(*,*) 'before nextime'
+         write(*,*) 'ITIME = ',itime
+         write(*,*) 'TSTEP3D = ',TSTEP3D
+         idum = 0
+         CALL NEXTIME( idum , ITIME, TSTEP3D )
          IF ( ITIME .EQ. 0 ) IDATE = 1
       ENDDO
 
