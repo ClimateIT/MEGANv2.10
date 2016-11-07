@@ -1,0 +1,49 @@
+SHELL=/bin/sh
+FC= ifort
+#FFLAGS= -O -Mvect=sse -Mextend -Msecond_underscore -Mlfs -Bstatic_pgi
+FFLAGS= -O2 -xHost -extend_source 132 -assume underscore -module -Bstatic -qopenmp
+
+LNKFLGS= -Bstatic -qopenmp
+
+PROGRAM= mgn2mech
+LIBS = -L/home/monkk/ioapi-3.1/Linux2_x86_64ifort -lioapi \
+       -L/mnt/scratch2/CAS/apps/netcdf/netcdf-4.4.0/lib -lnetcdff -lnetcdf \
+	-L/home/monkk/pvm3/lib/LINUX64 -lpvm3 \
+	-L/mnt/scratch2/CAS/apps/hdf5/hdf5-1.8.17/lib -lhdf5_hl -lhdf5 \
+	-L/mnt/scratch2/szip/szip-2.1/lib -lsz \
+	-L/mnt/scratch2/zlib/zlib-1.2.8/lib -lz 
+INCLUDE = -I/home/monkk/ioapi-3.1/ioapi/fixed_src \
+          -I/mnt/scratch2/CAS/apps/netcdf/netcdf-4.4.0/include \
+          -I$(CURDIR)/INCLDIR
+
+OBJS = \
+     checkmem.o \
+     growseason.o \
+     $(PROGRAM).o
+
+MODULES= *mod.f
+
+#-----------------------------------------------------------------------
+# line to allow file.mod files to be recognised by GNU make
+%.o : %.mod
+#-----------------------------------------------------------------------
+
+.SUFFIXES : .f .f .o 
+
+.f.o:
+	$(FC) -c $(FFLAGS) $(INCLUDE) $<
+.F.o:
+	$(FC) -c $(FFLAGS) $(INCLUDE) $<
+
+#-----------------------------------------------------------------------
+
+$(PROGRAM):	$(OBJS)
+	$(FC) $(LNKFLGS) $(INCLUDE) -o $(@) $(OBJS) $(LIBS)
+
+#-----------------------------------------------------------------------
+
+clean:
+	rm -f $(PROGRAM) *.o *.mod *.core
+#-----------------------------------------------------------------------
+
+
