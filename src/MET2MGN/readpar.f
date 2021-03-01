@@ -328,7 +328,7 @@ c----
       nlays3d=1
       nthik3d=1
 
-      if(.not. open3(ONAME,fsunkn3, pgname)) then
+      if(.not. open3(ONAME,fsunkn3, 'met2mgn')) then
             call m3err( 'readpar', sdate3d, stime3d,
      &        'Could not open or create '//ONAME//' file',.TRUE.)
       else if(.not. desc3(ONAME)) then 

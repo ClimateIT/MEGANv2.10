@@ -1,5 +1,5 @@
 #
-setenv MGNHOME /home/monkk/MEGAN_intel/MEGANv2.10
+setenv MGNHOME /home/monkk/MEGANv2.10
 setenv MGNSRC $MGNHOME/src
 setenv MGNLIB $MGNHOME/lib
 setenv MGNEXE $MGNHOME/bin

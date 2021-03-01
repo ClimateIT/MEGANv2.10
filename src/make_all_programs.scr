@@ -7,7 +7,7 @@
 # Modified by bkoo 06/20/07 - added IOAPI2UAM
 ##########################################################
 
-source /home/monkk/MEGAN_intel/MEGANv2.10/setcase.csh
+source /home/silverj/programs/MEGANv2.10/setcase.csh
 if ( $#argv != 1 ) then
 echo 'USAGE: $MGNSRC/make_all_program.scr [32bit|64bit'
 exit -1
