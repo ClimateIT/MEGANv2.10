@@ -1,18 +1,12 @@
 SHELL= /bin/sh
 FC= ifort
-#FFLAGS = -O2 -Mdalign -Mnoframe -byteswapio -Mlfs -Bstatic_pgi
-FFLAGS= -O2 -align dcommons -fomit-frame-pointer -convert big_endian -Bstatic -qopenmp
+FFLAGS= -O2 -extend_source 132 -assume underscore -module -qopenmp
 
-LNKFLGS= -Bstatic -qopenmp
+LNKFLGS= -qopenmp
 
 PROGRAM= ioapi2uam
-LIBS= 	-L/home/monkk/ioapi-3.1/Linux2_x86_64ifort -lioapi \
-	-L/mnt/scratch2/CAS/apps/netcdf/netcdf-4.4.0/lib -lnetcdff -lnetcdf \
-	-L/home/monkk/pvm3/lib/LINUX64 -lpvm3 \
-	-L/mnt/scratch2/CAS/apps/hdf5/hdf5-1.8.17/lib -lhdf5_hl -lhdf5 \
-	-L/mnt/scratch2/szip/szip-2.1/lib -lsz \
-	-L/mnt/scratch2/zlib/zlib-1.2.8/lib -lz 
-INCLUDE= -I/home/monkk/ioapi-3.1/ioapi/fixed_src 
+LIBS= -L$(WRF_CMAQ_HOME)/build/CMAQ/lib/x86_64/intel/ioapi/lib -lioapi $(shell nf-config --flibs) $(shell nc-config --libs)
+INCLUDE= -I$(WRF_CMAQ_HOME)/build/CMAQ/lib/x86_64/intel/ioapi/include_files/fixed_src/ -I$(CURDIR)/INCLDIR
 
 RAW = $(PROGRAM).o
 

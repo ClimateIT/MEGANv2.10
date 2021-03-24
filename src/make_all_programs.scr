@@ -7,13 +7,23 @@
 # Modified by bkoo 06/20/07 - added IOAPI2UAM
 ##########################################################
 
-source /home/silverj/programs/MEGANv2.10/setcase.csh
+#source /home/silverj/programs/MEGANv2.10/setcase.csh
 if ( $#argv != 1 ) then
 echo 'USAGE: $MGNSRC/make_all_program.scr [32bit|64bit'
 exit -1
 endif
 
-source ../setcase.csh
+source /mnt/appsource/modules/current/init/csh
+module load intel_studio/2019.5
+setenv INTEL_LICENSE_FILE "28519@irsdev02"
+setenv INTEL_HOME "/mnt/appsource/intel_studio/intel_studio-2019.5/"
+source ${INTEL_HOME}/bin/compilervars.sh intel64
+
+setenv MGNSRC $WRF_CMAQ_HOME/src/MEGANv2.10/src
+
+echo $MGNSRC
+
+#source ../setcase.csh
 echo "Removing *.o"
 rm $MGNSRC/MET2MGN/*.o
 rm $MGNSRC/TXT2IOAPI/*.o
